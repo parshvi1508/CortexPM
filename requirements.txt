@@ -1,0 +1,12 @@
+streamlit
+supabase
+pandas
+numpy
+plotly
+qrcode
+openpyxl
+matplotlib
+streamlit-option-menu
+scikit-learn
+tensorflow
+python-dotenv
