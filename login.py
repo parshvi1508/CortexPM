@@ -1,94 +1,202 @@
 import streamlit as st
 
-# Set page configuration
+# Page configuration
 st.set_page_config(page_title="CortexPM", layout="centered")
 
-# Initialize session state for tracking actions
+# Initialize session state 
 if 'login_action' not in st.session_state:
     st.session_state['login_action'] = False
 if 'register_action' not in st.session_state:
     st.session_state['register_action'] = False
 if 'about_action' not in st.session_state:
     st.session_state['about_action'] = False
-
-# Custom CSS for gradient background and polished theme
 st.markdown("""
     <style>
-        /* Gradient background for dashing first impression */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
         body {
             background: linear-gradient(135deg, #0d47a1, #1de9b6);
             color: #f4f4f8;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Center Title and Tagline */
-        h1, h2 {
+        /* Title */
+        h1 {
             text-align: center;
-            color: #ffffff;
-            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 3.2em;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.2em;
+            top : 5%;
         }
 
+        /* Tagline*/
         h2 {
-            font-weight: lighter;
+            text-align: center;
+            color: #a5f3fc;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            font-size: 1.5em;
+            letter-spacing: 0.5px;
+            margin-bottom: 2em;
+        }
+
+        /* Section headers */
+        h3 {
+            color: #e0f7fa;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.8em;
+            margin: 1em 0;
+            background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Input fields */
+        .stTextInput > div > div > input {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #e0f7fa !important;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Select box*/
+        .stSelectbox > div > div {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #e0f7fa ;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Button */
+        .stButton>button {
+            background: linear-gradient(135deg, #0d47a1, #1de9b6);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 8px;
+            padding: 10px 24px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(13, 71, 161, 0.3);
+        }
+        .stButton>button:hover {
+            background: linear-gradient(135deg, #1565C0, #00BFA5);
+            transform: translateY(-2px);
+            box-shadow: 0px 6px 15px rgba(13, 71, 161, 0.5);
+        }
+
+        /* Info box */
+        .stAlert {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
             color: #e0f7fa;
         }
 
-        /* Button styles */
-        .stButton>button {
-            background-color: #333;
-            color: #1de9b6;
-            font-size: 16px;
-            border-radius: 8px;
-            padding: 8px 20px;
-            font-weight: bold;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            box-shadow: 0px 4px 10px rgba(29, 233, 182, 0.5);
-        }
-        .stButton>button:hover {
-            background-color: #1de9b6;
-            color: #333;
+        /* Success message*/
+        .element-container .stSuccess {
+            background: linear-gradient(135deg, rgba(13, 71, 161, 0.1), rgba(29, 233, 182, 0.1));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(29, 233, 182, 0.3);
+            color: #e0f7fa;
         }
 
-        /* Center container layout */
+        /* Error message */
+        .element-container .stError {
+            background: rgba(255, 82, 82, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 82, 82, 0.3);
+            color: #ffcdd2;
+        }
+
+        /* main container*/
         .main-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 0.5em;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Footer  */
+        .footer {
+            text-align: center;
             padding: 20px;
+            color: #a5f3fc;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9em;
+        }
+
+        .footer a {
+            color: #4facfe;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #00f2fe;
+        }
+
+        /* Label text*/
+        .stTextInput > label {
+            color: #a5f3fc !important;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .stSelectbox > label {
+            color: #a5f3fc !important;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
         }
     </style>
 """, unsafe_allow_html=True)
+# Logo 
+st.image("assets/CORTEX PM LOGO.png", width=600) 
 
-# Main container layout
+# Main container
 st.markdown("<div class='main-container'>", unsafe_allow_html=True)
 
 # Title and tagline
 st.markdown("<h1>CortexPM</h1>", unsafe_allow_html=True)
 st.markdown("<h2>Empowering Collaboration, Tracking Success</h2>", unsafe_allow_html=True)
 
-# Conditional display based on the button clicked
-if not st.session_state['about_action']:
-    col1, col2, col3 = st.columns(3)
+# Navigation buttons
+col1, col2, col3 = st.columns(3)
 
-    with col1:
-        if st.button("🔒 Login"):
-            st.session_state['login_action'] = True
-            st.session_state['register_action'] = False
-            st.session_state['about_action'] = False
+with col1:
+    if st.button("🔒 Login"):
+        st.session_state['login_action'] = True
+        st.session_state['register_action'] = False
+        st.session_state['about_action'] = False
 
-    with col2:
-        if st.button("📝 Register"):
-            st.session_state['register_action'] = True
-            st.session_state['login_action'] = False
-            st.session_state['about_action'] = False
+with col2:
+    if st.button("📝 Register"):
+        st.session_state['register_action'] = True
+        st.session_state['login_action'] = False
+        st.session_state['about_action'] = False
 
-    with col3:
-        if st.button("ℹ️ About"):
-            st.session_state['about_action'] = True
+with col3:
+    if st.button("ℹ️ About"):
+        st.session_state['about_action'] = not st.session_state['about_action']
+        st.session_state['login_action'] = False
+        st.session_state['register_action'] = False
 
-# Display About information separately
 if st.session_state['about_action']:
     st.markdown("### About CortexPM")
     st.info(
@@ -97,13 +205,11 @@ if st.session_state['about_action']:
         "user-friendly platform tailored to the needs of educational institutions."
     )
 
-# Display Login or Registration form based on selection
 if st.session_state['login_action']:
-    st.markdown("### Choose your role to log in:")
+    st.markdown("### Choose your role to log in")
     role = st.selectbox("Select Role:", ["Admin", "Faculty", "Student"], key="role_select")
     if role:
-        st.session_state['role'] = role
-        st.markdown(f"You have chosen to log in as **{role}**.")
+        st.markdown(f"You have chosen to log in as **{role}**")
         st.markdown("### Enter your credentials")
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
@@ -131,5 +237,11 @@ elif st.session_state['register_action']:
 st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer
-st.markdown("---")
-st.markdown("© 2024 CortexPM | [Terms of Service](#) | [Privacy Policy](#) | [Contact Us](#)")
+st.markdown("""
+    <div class='footer'>
+        © 2024 CortexPM | 
+        <a href='#'>Terms of Service</a> | 
+        <a href='#'>Privacy Policy</a> | 
+        <a href='#'>Contact Us</a>
+    </div>
+""", unsafe_allow_html=True)
