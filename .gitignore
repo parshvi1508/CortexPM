@@ -2,3 +2,9 @@ env/
 env
 .env/
 .env
+__pycache__/
+*.pyc
+.env
+secrets.toml
+*.pdb
+.DS_Store
